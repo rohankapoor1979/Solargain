@@ -1,11 +1,14 @@
 package com.abovesurveying;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -55,19 +58,40 @@ public class SolargainChrome {
 
 		LOGGER.info(String.format("Found %d solar farms", elements.size()));
 		
+		List<SolarFarm> solarFarms = new ArrayList<>();
 		for (WebElement e : elements) {
 			
 			List<WebElement> childs = e.findElements(By.xpath("./child::*"));
 
 			for (WebElement ce : childs) {
-				LOGGER.info(String.format("Solar farm [%s] has last inspection date [%s] and inspection status [%s]", 
-						ce.getAttribute("solarfarmname"), 
-						ce.getAttribute("surveydate"),
-						InspectionDateStatus.statusOf(ce.getAttribute("surveydate"))));
+				SolarFarm sf = SolarFarm.from(ce);
+				solarFarms.add(sf);
+				LOGGER.info(String.format("Solar farm [%s] has inspection status [%s]", 
+						sf,	InspectionDateStatus.statusOf(ce.getAttribute("surveydate"))));
 			}
-
 		}
 
+		int siteNum = 1;
+		for (SolarFarm sf : solarFarms) {
+			LOGGER.info(String.format("Opening [%s] url [%s]", sf.getName(), sf.getUrl()));
+			
+			((JavascriptExecutor) driver).executeScript("window.open()");
+		    ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		    driver.switchTo().window(tabs.get(siteNum++));
+		    driver.get(sf.getUrl());
+		}
+		
+		//test();
+
+	}
+	
+	private static void test() {
+		WebDriver driver = new ChromeDriver();
+	    driver.get("http://yahoo.com");  
+	    ((JavascriptExecutor) driver).executeScript("window.open()");
+	    ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+	    driver.switchTo().window(tabs.get(1));
+	    driver.get("http://google.com");
 	}
 	
 	
