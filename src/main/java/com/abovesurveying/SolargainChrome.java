@@ -43,7 +43,7 @@ public class SolargainChrome {
 
 		List<WebElement> elements = driver.findElements(By.cssSelector("#solarPlantList > div"));
 
-		LOG.info(String.format("Found %d of solar farms", elements.size()));
+		LOG.info(String.format("Found %d solar farms", elements.size()));
 		
 		for (WebElement e : elements) {
 			
