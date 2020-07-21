@@ -10,9 +10,19 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+/**
+ * To build project at command line: mvn clean install -package
+ * 
+ * To run this program 
+ * 
+ *  mvn exec:java -Dexec.mainClass=com.abovesurveying.SolargainChrome
+ *  java -jar target/solargain-1.0-SNAPSHOT-jar-with-dependencies.jar com.abovesurveying.SolargainChrome
+ *
+ */
 public class SolargainChrome {
 	
-	final static Logger LOG = Logger.getLogger(SolargainChrome.class);
+	final static Logger LOGGER = Logger.getLogger(SolargainChrome.class);
+	
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
@@ -43,14 +53,14 @@ public class SolargainChrome {
 
 		List<WebElement> elements = driver.findElements(By.cssSelector("#solarPlantList > div"));
 
-		LOG.info(String.format("Found %d solar farms", elements.size()));
+		LOGGER.info(String.format("Found %d solar farms", elements.size()));
 		
 		for (WebElement e : elements) {
 			
 			List<WebElement> childs = e.findElements(By.xpath("./child::*"));
 
 			for (WebElement ce : childs) {
-				LOG.info(String.format("Solar farm [%s] has last inspection date [%s] and inspection status [%s]", 
+				LOGGER.info(String.format("Solar farm [%s] has last inspection date [%s] and inspection status [%s]", 
 						ce.getAttribute("solarfarmname"), 
 						ce.getAttribute("surveydate"),
 						InspectionDateStatus.statusOf(ce.getAttribute("surveydate"))));
