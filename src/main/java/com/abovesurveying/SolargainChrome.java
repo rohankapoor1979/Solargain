@@ -73,7 +73,7 @@ public class SolargainChrome {
 
 		int siteNum = 1;
 		for (SolarFarm sf : solarFarms) {
-			LOGGER.info(String.format("Opening [%s] url [%s]", sf.getName(), sf.getUrl()));
+			LOGGER.info(String.format("Opening [%s/%S] [%s] url [%s]", siteNum, solarFarms.size(), sf.getName(), sf.getUrl()));
 			
 			((JavascriptExecutor) driver).executeScript("window.open()");
 		    ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
